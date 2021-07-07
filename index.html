@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-svn报错sqllite database disk image is malformed 的解决方法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/07/07/svn%E6%8A%A5%E9%94%99sqllite%20database%20disk%20image%20is%20malformed%20%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/" class="article-date">
+  <time class="dt-published" datetime="2021-07-07T10:29:32.024Z" itemprop="datePublished">2021-07-07</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>title: svn报错sqllite database disk image is malformed 的解决方法<br>date: 2021-06-30 14:25:14<br>tags:</p>
+<p>​                        </p>
+<p>在使用svn的时候可能会出现莫名的报错，比如这个可能是一些异常终止造成的。</p>
+<p>其实解决这个问题也很简单，网上也有很多解决方法，比如重新checkout新的代码即可，但是这样会造成本地未提交代码丢失</p>
+<p>还有安装sqlit3，执行一些命令，寻找问题原因，但是这样会比较费时，如果比较着急使用就不太合适</p>
+<p>所以这里记录一下另外一种简单的方式</p>
+<p>可以新拉一个项目(每个项目根目录都有一个.svn文件夹，这里可能是隐藏了 找不到 可以使用搜索方式进行搜索.svn 获取取消隐藏)</p>
+<p>在项目根目录下找到以下文件将新代码中的文件替换到老项目中</p>
+<p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622153118219.png" alt="image-20210622153118219"></p>
+<p>然后再勾选红框中的对勾 重启idea后再取消红框中的对勾 即恢复提交</p>
+<p>![]<a target="_blank" rel="noopener" href="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622160552195.png">https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622160552195.png</a></p>
+<p>另外由于一些误操作有时也可能会报该文件夹中缺少某些文件，同样用正常的该文件夹进行覆盖即可解决 </p>
+<p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622153714600.png" alt="image-20210622153714600"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/07/07/svn%E6%8A%A5%E9%94%99sqllite%20database%20disk%20image%20is%20malformed%20%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/" data-id="ckqtcldia00029oqe1ah36tql" data-title="" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-redis总结" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/07/07/redis%E6%80%BB%E7%BB%93/" class="article-date">
+  <time class="dt-published" datetime="2021-07-07T10:29:32.020Z" itemprop="datePublished">2021-07-07</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>title: redis总结<br>date: 2021-06-30 15:25:14<br>tags:</p>
+<p>​                                                                                                  </p>
+<p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210629164922376.png" alt="image-20210629164922376"></p>
+<h5 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h5><p>string</p>
+<p>应用场景<br>分布式全局序列号<br>INCRBY  orderId  1000  redis批量生成序列号提升性能<br>每台每次拿1000,0<del>1000,1001</del>2000,2001~3000<br>拿完后再各自慢慢处理这1000的容量<br>计数器</p>
+<p>hash</p>
+<p>就是一个双层map<br>key中一个value，value中还是一个map<br>使用场景需要将一个对象的属性拆分存入redis中<br>优点<br>1）同类数据归类整合储存，方便数据管理<br>2）相比string操作消耗内存与cpu更小<br>3）相比string储存更节省空间</p>
+<p>缺点<br>过期功能不能使用在field上，只能用在key上<br>Redis集群架构下不适合大规模使用<br>因为如果一个hash的key中的属性很多的话，只能存在一个redis节点上，那么这个节点压力会比其他节点压力大很多，造成redis集群下压力分配不均衡！</p>
+<p>list</p>
+<p>模拟分布式系统数据结构<br>①：Stack(栈) = LPUSH（左边放） + LPOP（左边取）<br>②：Queue(队列）= LPUSH（左边放） + RPOP（右边取）<br>③：Blocking MQ(阻塞队列）= LPUSH（左边放） + BRPOP（右边阻塞取：没有数据就阻塞！）</p>
+<p>问：那么redis实现的数据结构和jdk中提供的数据结构有什么区别呢？<br>答：jdk提供的数据结构仅在本服务中有用，如果在分布式环境下，则需要借助redis等中间件，模拟数据结构来统一管理数据</p>
+<p>set</p>
+<p>set1：（a、b、c）<br>set2：（b、c、d）<br>set3：（c、d、e）</p>
+<h5 id="关注模型"><a href="#关注模型" class="headerlink" title="关注模型"></a>关注模型</h5><p>三个集合的<br>交集为：SINTER set1 set2 set3 ==&gt; { c }<br>并集为：SUNION set1 set2 set3 ==&gt; { a,b,c,d,e }<br>差集为：SDIFF set1 set2 set3 ==&gt; { a }<br>差集计算方式：set1 - （set2并set3） = {a、b、c} - {b、c、d、e} = {a} 只保留a中单独存在的元素</p>
+<p>共同关注A的人：可以用交集来实现<br>我可能认识的人：可以使用差集来实现，把我关注的人求差集<br>我关注的人也关注A：可以使用SISMEMBER 命令查看A是否在我关注的人的关注列表中，如果存在把这个人返回</p>
+<p>zset</p>
+<p>zset相比于set多一个score 分值，正是根据这个分值进行排序，所以zset才能展示有序的数据</p>
+<h5 id="核心原理"><a href="#核心原理" class="headerlink" title="核心原理"></a>核心原理</h5><p>rdb</p>
+<p>rdb快照就是可以根据配置save 多长时间 多少个key被修改过执行一次快照，以二进制流的方式将当前数据保存到dump.rdb中<br>每次命令执行都会将所有redis内存快照到一个新的rdb文件里，并覆盖原有rdb快照文件。</p>
+<p>有两种写入模式save和bgsave<br>save是同步进行，会阻塞客户端执行命令</p>
+<p>bgsave是redis借助操作系统提供的写时复制技术（Copy-On-Write, COW）类似开启一个子线程来执行写入，如果在写入的这段时间主线程有有了新的修改数据，会存放在一个缓存副本里面，最后子线程执行副本里面的数据写入rdb文件<br>但是bgsave会消耗内存，因为新开了一个子线程</p>
+<p>配置自动生成rdb文件后台使用的是bgsave方式。</p>
+<p>aof</p>
+<p>因为rdb会造成最近数据丢失，如果宕机会造成这样情况，所以aop是每秒(可以设置每次还是每秒还是系统默认)将修改的命令保存到aof文件中，需要恢复时执行aof，但是这样会造成很多无效命令，redis会定期将内存中最新的数据写入到aof文件中，AOF重写redis会fork出一个子进程去做(与bgsave命令类似)，不会对redis正常命令处理有太多 影响</p>
+<p>Redis 4.0 混合持久化  在重启的的时候一般会采用aof来恢复数据，因为数据比较全，但是相比rdb恢复速度比较慢，要解决这个问题aof在重写的时候不会直接将内存数据转成RESP命令写入aof文件，而是将重写这一刻之前的内训做rdb快照处理，并且将rdb快照数据和增量更新数据分别存在一起等重新完成后才会把原aof覆盖<br>所以在重启的时候可以先加载rdb内容，在重放增加aof文件</p>
+<p>哨兵</p>
+<p>哨兵是redis的一种特殊服务，不会提供读写，只监控主从节点的状态，当客户端第一次请求会通过哨兵找到主节点，后续就会直接访问主节点，当节点信息发生变化时哨兵会第一时间感知到，并将主节点通知给客户端</p>
+<p>主从原理</p>
+<p>当给主节点配置一个从节点后，不管是不是第一次连接，从节点会向主节点发送一个sync请求，这时主节点就会生成一个新的rdb通过bgsave方式发给从节点，此时主节点会继续正常工作，如果有新的修改会生成一个缓存，最后发给从节点，从节点收到rdb和缓存后，会先清理之前的数据，然后直接执行就行，如果有大量请求，主节点也不会每次都生成rdb，只持久化一次，最后主节点通过socket长连接将又来的新命令持续发给从节点保证数据一致性</p>
+<p>集群和原理</p>
+<p>如果用哨兵模式实现集群不仅操作比较繁琐，而且性能也不是很好，所以现在  采用集群的模式，会把各个节点分成每个小集群组，将所有数据分为16384槽位，每个节点负责一部分槽位，客户端请求时候也会把槽位配置信息返回给客户端，客户端缓存这一份信息，如果想查询某个key时就可以很快定位到在哪个小集群上，当然这份信息有改动同步机制。<br>如果客户端发出一个错误命令，小集群发现该指令不归自己管，就会返回正确的地址，客户端重新向正确的地址操作</p>
+<p>每个节点都有一个专门用于节点间gossip通信的端口，就是自己提供服务的端口号+10000，比如7001，那么  用于节点间通信的就是17001端口。 每个节点每隔一段时间都会往另外几个节点发送ping消息，同时其他几  点接收到ping消息之后返回pong消息。</p>
+<p>选举机制；当从节点发现自己的主节点挂掉后就会尝试failover成为主节点，他会通过广播的形式发一个syn，只有其他主节点收到后才会回应一个ack，只能回一次，从节点会收集回复自己的ack超过半数以上就会成为新的主节点，当然极端情况如果三个主节点挂了一个，剩下两个主节点分别回复这两个从节点，收到回复ack数量一样，就会重新选举</p>
+<p>脑裂问题：如果没有过半机制的话，可能由于网络抖动哨兵不能感知到主节点，会新选举一个主节点，当原主节点恢复后会成为新的从节点把原来数据清楚，同步现在新主节点的数据，这样就会导致数据丢失<br>可以用redlock利用过半机制解决该问题，但是会牺牲性能</p>
+<h5 id="分布式锁"><a href="#分布式锁" class="headerlink" title="分布式锁"></a>分布式锁</h5><p>实现分布式锁要具备以下几点特性<br>容错<br>复制<br>不能产生死锁<br>不能解锁别人的<br>1、不能产生死锁(使用setIfAbsent将值设置为当前时间加过期时间，设置过期时间，如果已经过期的锁，可以获取锁，但是考虑到并发问题，使用getandset，获取set之前的老值，将当前key的值设置进去，加一个判断，如果老值跟刚才获取的值一致说明没有被修改过，可以加锁(类似cas操作)<br>2、自己加的锁只能自己解锁(解锁的时候判断传入的value是否为当前key的值)<br>3、复制就是用一个value<br>4、容错是集群方面的，只要大部分 Redis 节点启动，客户端可以获取和释放锁</p>
+<p>这样只能实现一个比较高效的分布式锁，还是解决不了解锁原子性的问题，如果解锁的时候我刚执行到比较的位置redis挂了，那这个锁相当于一直没被解开，所以可以使用lua脚本保证原子性。lua脚本适合小批量的执行比较快的命令放在一起执行，因为如果整个lua脚本执行的时间比较长会造成阻塞。</p>
+<p>还有一个问题就是如何设置过期时间问题，如果设置的比较短，当锁已经过期了但是任务还没有执行完成，那么这个锁是可以被其他线程拿到的，要解决这个问题需要实现对锁续命，保证该任务执行完成释放锁，其他线程才能拿到锁，可以使用时间定时线程池或者timer开启一个守护线程，定时去对当前主线程锁重新设置过期时间，但是这样实现起来比较复杂<br>可以利用redison来实现该功能，因为redison底层实现了现成的锁续命，以及使用了大量的lua来保证原子性</p>
+<h5 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h5><p>穿透</p>
+<p>不存在的key<br>1、将不存在的key缓存，设置一个过期时间<br>2.使用布隆过滤器</p>
+<p>击穿</p>
+<p>并发的查同一条过期key<br>1、设置这个热点缓存永不过期。这时要注意在value当中包含一个逻辑<br>上的过期时间，然后另起一个线程，定期重建这些缓存。<br>2、加载DB的时候，要防止并发。</p>
+<p>雪崩</p>
+<p>缓存层支撑不住或者宕机，类似大量请求访问bigkey，缓存击穿指并发查同一条数据，缓存雪崩是不同数据都过期了，很多数据都查不到从而查数据库。<br>1、批量更新可以的时候可以随机设置过期时间<br>2、设置热点数据永远不过期<br>3、使用redis集群，将热点数据均匀分布在不同搞得缓存数据库中</p>
+<p>数据不一致</p>
+<p>对于并发量很小的场景几乎可以不考虑该问题，因为发生的概率很小，就算并发量很高，如果是可以容忍短时间数据不一致，可以通过缓存加过期时间解决大部分问题<br>当然如果是读多写少的情况有下面两种方式解决<br>加读写锁，读读不互斥，读写互斥<br>1》先操作缓存，但是不删除缓存。将缓存修改为一个特殊值(-999)。客<br>户端读缓存时，发现是默认值，就休眠一小会，再去查一次Redis。 -》 特殊值对业<br>务有侵入。 休眠时间，可能会多次重复，对性能有影响。<br>2》延时双删。 先删除缓存，然后再写数据库，休眠一小会，再次删除缓存。-》 如<br>果数据写操作很频繁，同样还是会有脏数据的问题。</p>
+<p>清除策略</p>
+<p>被动清理</p>
+<p>.volatile-ttl</p>
+<p>主动清理</p>
+<p>volatile-random</p>
+<p>volatile-lru</p>
+<p>volatile-lfu</p>
+<p>allkeys-random</p>
+<p>allkeys-lru</p>
+<p>淘汰很久没被访问过的数据，以最近一次访问时间作为参考</p>
+<p>allkeys-lfu</p>
+<p>淘汰最近一段时间被访问次数最少的数据，以次数作为参考。</p>
+<p>noeviction</p>
+<p>当内存满了之后触发主动清理</p>
+<p>布隆过滤器</p>
+<p>在布隆过滤器中，如果他说没有的数据那一定没有，如果他说有的数据有可能没有，他存在一定的误判率，使用时需要在启动项目的时候将数据一次性初始化到过滤器中，如果中间有删除更新新增的数据，只能通过定期初始化过滤器来实现，他本身不能更新。<br>原理：他的底层是通过0 1 0 1  这样的二进制位数组来存储某个值是否存证，通过他的几个hash函数判断某个key落到哪个位置，如果存在就设置为1，获取的时候一样通过几个hash函数去定位在那些位置，如果有一个为0就返回不存在，如果都为1极有可能存在，因为有可能这个1是其他key导致的</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/07/07/redis%E6%80%BB%E7%BB%93/" data-id="ckqtcldi800019oqe2coaclky" data-title="" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-hexo+github快速搭建自己的博客" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/07/07/hexo+github%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E5%8D%9A%E5%AE%A2/" class="article-date">
+  <time class="dt-published" datetime="2021-07-07T10:29:32.016Z" itemprop="datePublished">2021-07-07</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>title: hexo+github快速搭建自己的博客<br>date: 2021-06-22 14:25:14<br>tags:</p>
+<p>打开本地git bash 创建一个自己保存博客的文件夹执行以下命令安装hexo</p>
+<p>![image-20210622140851007](<a target="_blank" rel="noopener" href="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622140851007.png">https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622140851007.png</a></p>
+<p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622141400643.png" alt="image-20210622141400643"></p>
+<p>hexo详细使用可以在官方文档中查看</p>
+<p><a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/">https://hexo.io/zh-cn/docs/</a></p>
+<p>安装完成后就可以直接启动hexo</p>
+<p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622141556787.png" alt="image-20210622141556787"></p>
+<p>然后就可以在浏览器上面输入localhost:4000/进入自己本地博客系统</p>
+<p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622141708347.png" alt="image-20210622141708347"></p>
+<p>但是此时只能在本地访问，想要放在公网上就要依赖github了</p>
+<p>先在github上面创建一个项目</p>
+<p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622142416918.png" alt="image-20210622142416918"></p>
+<p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622142542793.png" alt="image-20210622142542793"></p>
+<p>然后将hexo和创建的项目绑定在一起。</p>
+<p>这里需要先添加一个秘钥，如果不添加的话，后续每次部署都需要登录两次github会比较麻烦</p>
+<p>依次执行以下命令，(用户名是自己的github账号，邮箱可以随意填写)</p>
+<p>git config –global user.name “WangyihaoJava”</p>
+<p>git config –global user.email “<a href="mailto:WangyihaoJava@qq.com">WangyihaoJava@qq.com</a>“</p>
+<p>ssh-keygen -t rsa</p>
+<p> cd ~/.ssh/</p>
+<p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622143015743.png" alt="img"></p>
+<p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622143321190.png" alt="image-20210622143321190"></p>
+<p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622143350864.png" alt="image-20210622143350864"></p>
+<p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622143442711.png" alt="image-20210622143442711"></p>
+<p>执行完成后可得到一个公钥和私钥，复制公钥在github设置选项配置公钥</p>
+<p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622143930633.png" alt="image-20210622143930633"></p>
+<p>回到gitbash设置配置文件</p>
+<p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622144058941.png" alt="image-20210622144058941"></p>
+<p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622144218249.png" alt="image-20210622144218249"></p>
+<p>repo就是自己项目的SSH地址</p>
+<p>配置完成就可以新添加一个文件进行测试</p>
+<p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622144429525.png" alt="image-20210622144429525"></p>
+<p>执行命令hexo g -d 将文件部署在github</p>
+<p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622144527496.png" alt="image-20210622144527496"></p>
+<p>访问刚刚创建项目时填写的项目名称</p>
+<p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622144838112.png" alt="image-20210622144838112"></p>
+<p>此时就可以通过该域名访问到自己的博客系统</p>
+<p>但是目前写的博客里面只能是文字，不能使用图片，因为Typora上面的图片是引用本地的</p>
+<p>所以这里需要将图片保存到gitee中，每次有新图片利用picgo自动上传到gitee中</p>
+<p>首先在gitee上面新建一个开源项目保存图片</p>
+<p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622150137663.png" alt="image-20210622150137663"></p>
+<p>生成一个令牌备用</p>
+<p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622150315620.png" alt="image-20210622150315620"></p>
+<p>在Typora中下载picgo</p>
+<p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622145544794.png" alt="image-20210622145544794"></p>
+<p>下载完成安装后在插件设置下载以下插件，只需要下载这一个即可</p>
+<p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622145625907.png" alt="image-20210622145625907"></p>
+<p>repo就是在gitee中保存图片的项目</p>
+<p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622145812308.png" alt="image-20210622145812308"></p>
+<p>repo就是刚刚在gitee中创建的项目，可以直接在url中获取，token就是刚刚生成的令牌，path就是储存图片的位置，branch默认使用master，customPath使用年月</p>
+<p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622150515545.png" alt="image-20210622150515545"></p>
+<p>配置完成之后就可以typora中测试一下</p>
+<p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622150756407.png" alt="image-20210622150756407"></p>
+<p>成功之后每次在typora中增加图片就会自动上传到gitee中</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/07/07/hexo+github%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E5%8D%9A%E5%AE%A2/" data-id="ckqtcldic00039oqedvqo6i9d" data-title="" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-23种设计模式-代理模式-动态代理" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/07/07/23%E7%A7%8D%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F-%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/" class="article-date">
+  <time class="dt-published" datetime="2021-07-07T10:29:32.013Z" itemprop="datePublished">2021-07-07</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>title: 23种设计模式-代理模式-动态代理<br>date: 2021-06-30 15:25:14<br>tags:</p>
+<p>代理模式</p>
+<p>比如Source需要实现一个方法的增强，但是不能在a源码上面直接修改，因为Source被其他引用了，不符合开闭原则(对修改关闭，对增加开放)。</p>
+<p>此时可以通过一个代理对象Invoke，实现Source的相同功能，构造方法中传入Source，在这个相同的功能上面做方法增强。</p>
+<p>这时创建一个代理对象Invoke传入Source就可以实现方法的增强，并且没有修改源文件</p>
+<p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210630104610608.png" alt="image-20210630104610608"></p>
+<p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210630104610608.png" alt="img"></p>
+<p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210630104655327.png" alt="image-20210630104655327"></p>
+<p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210630104804105.png" alt="image-20210630104804105"></p>
+<p>动态代理</p>
+<p>不可能为每个需要增强方法的类都创建一个代理对象，动态代理就解决了这种问题，其核心问题增强的方法是一定的，怎么让代理对象动态的获取被代理对象要执行的方法，其实是代理对象在初始化的时候利用了反射，获取了被代理对象的classloader和interface，这样代理对象就可以实现被代理对象的原方法加上自己的增强方法实现动态代理</p>
+<p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210630104818777.png" alt="image-20210630104818777"></p>
+<p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210630104717387.png" alt="image-20210630104717387"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/07/07/23%E7%A7%8D%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F-%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/" data-id="ckqtcldhz00009oqe7nq70c85" data-title="" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-test" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/07/07/test/" class="article-date">
+  <time class="dt-published" datetime="2021-07-07T10:25:14.000Z" itemprop="datePublished">2021-07-07</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/07/07/test/">test</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/07/07/test/" data-id="ckqtcldid00049oqehn4d7giw" data-title="test" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-hello-world" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/07/07/hello-world/" class="article-date">
+  <time class="dt-published" datetime="2021-07-07T08:53:38.159Z" itemprop="datePublished">2021-07-07</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/07/07/hello-world/">Hello World</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/07/07/hello-world/" data-id="ckqt8w0t00000n8qe6vrn40lg" data-title="Hello World" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/07/07/svn%E6%8A%A5%E9%94%99sqllite%20database%20disk%20image%20is%20malformed%20%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2021/07/07/redis%E6%80%BB%E7%BB%93/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2021/07/07/hexo+github%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E5%8D%9A%E5%AE%A2/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2021/07/07/23%E7%A7%8D%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F-%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2021/07/07/test/">test</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
