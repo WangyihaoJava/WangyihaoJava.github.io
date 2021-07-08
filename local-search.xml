@@ -4,32 +4,6 @@
   
   
   <entry>
-    <title>test</title>
-    <link href="/2021/07/07/test/"/>
-    <url>/2021/07/07/test/</url>
-    
-    <content type="html"><![CDATA[]]></content>
-    
-    
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>Hello World</title>
-    <link href="/2021/07/07/hello-world/"/>
-    <url>/2021/07/07/hello-world/</url>
-    
-    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
-    
-    
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>23种设计模式-代理模式-动态代理</title>
     <link href="/2021/06/30/23%E7%A7%8D%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F-%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/"/>
     <url>/2021/06/30/23%E7%A7%8D%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F-%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/</url>
@@ -74,6 +48,19 @@
     <url>/2021/06/22/hexo+github%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E5%8D%9A%E5%AE%A2/</url>
     
     <content type="html"><![CDATA[<p>打开本地git bash 创建一个自己保存博客的文件夹执行以下命令安装hexo</p><p>![image-20210622140851007](<a href="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622140851007.png">https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622140851007.png</a></p><p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622141400643.png" alt="image-20210622141400643"></p><p>hexo详细使用可以在官方文档中查看</p><p><a href="https://hexo.io/zh-cn/docs/">https://hexo.io/zh-cn/docs/</a></p><p>安装完成后就可以直接启动hexo</p><p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622141556787.png" alt="image-20210622141556787"></p><p>然后就可以在浏览器上面输入localhost:4000/进入自己本地博客系统</p><p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622141708347.png" alt="image-20210622141708347"></p><p>但是此时只能在本地访问，想要放在公网上就要依赖github了</p><p>先在github上面创建一个项目</p><p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622142416918.png" alt="image-20210622142416918"></p><p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622142542793.png" alt="image-20210622142542793"></p><p>然后将hexo和创建的项目绑定在一起。</p><p>这里需要先添加一个秘钥，如果不添加的话，后续每次部署都需要登录两次github会比较麻烦</p><p>依次执行以下命令，(用户名是自己的github账号，邮箱可以随意填写)</p><p>git config –global user.name “WangyihaoJava”</p><p>git config –global user.email “<a href="mailto:WangyihaoJava@qq.com">WangyihaoJava@qq.com</a>“</p><p>ssh-keygen -t rsa</p><p> cd ~/.ssh/</p><p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622143015743.png" alt="img"></p><p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622143321190.png" alt="image-20210622143321190"></p><p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622143350864.png" alt="image-20210622143350864"></p><p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622143442711.png" alt="image-20210622143442711"></p><p>执行完成后可得到一个公钥和私钥，复制公钥在github设置选项配置公钥</p><p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622143930633.png" alt="image-20210622143930633"></p><p>回到gitbash设置配置文件</p><p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622144058941.png" alt="image-20210622144058941"></p><p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622144218249.png" alt="image-20210622144218249"></p><p>repo就是自己项目的SSH地址</p><p>配置完成就可以新添加一个文件进行测试</p><p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622144429525.png" alt="image-20210622144429525"></p><p>执行命令hexo g -d 将文件部署在github</p><p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622144527496.png" alt="image-20210622144527496"></p><p>访问刚刚创建项目时填写的项目名称</p><p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622144838112.png" alt="image-20210622144838112"></p><p>此时就可以通过该域名访问到自己的博客系统</p><p>但是目前写的博客里面只能是文字，不能使用图片，因为Typora上面的图片是引用本地的</p><p>所以这里需要将图片保存到gitee中，每次有新图片利用picgo自动上传到gitee中</p><p>首先在gitee上面新建一个开源项目保存图片</p><p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622150137663.png" alt="image-20210622150137663"></p><p>生成一个令牌备用</p><p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622150315620.png" alt="image-20210622150315620"></p><p>在Typora中下载picgo</p><p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622145544794.png" alt="image-20210622145544794"></p><p>下载完成安装后在插件设置下载以下插件，只需要下载这一个即可</p><p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622145625907.png" alt="image-20210622145625907"></p><p>repo就是在gitee中保存图片的项目</p><p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622145812308.png" alt="image-20210622145812308"></p><p>repo就是刚刚在gitee中创建的项目，可以直接在url中获取，token就是刚刚生成的令牌，path就是储存图片的位置，branch默认使用master，customPath使用年月</p><p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622150515545.png" alt="image-20210622150515545"></p><p>配置完成之后就可以typora中测试一下</p><p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622150756407.png" alt="image-20210622150756407"></p><p>成功之后每次在typora中增加图片就会自动上传到gitee中</p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="/2021/06/20/hello-world/"/>
+    <url>/2021/06/20/hello-world/</url>
+    
+    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo new <span class="hljs-string">&quot;My New Post&quot;</span><br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo server<br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo generate<br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo deploy<br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
     
     
     
