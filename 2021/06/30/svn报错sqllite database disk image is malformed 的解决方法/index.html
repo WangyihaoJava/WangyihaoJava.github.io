@@ -18,7 +18,7 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-  <title>博客空间</title>
+  <title>svn报错sqllite database disk image is malformed 的解决方法 - 博客空间</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
 
@@ -163,7 +163,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="">
+            <span class="h2" id="subtitle" title="svn报错sqllite database disk image is malformed 的解决方法">
               
             </span>
 
@@ -173,8 +173,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-07-07 18:29" pubdate>
-        2021年7月7日 晚上
+      <time datetime="2021-06-30 14:25" pubdate>
+        2021年6月30日 下午
       </time>
     </span>
   
@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      297 字
+      304 字
     </span>
   
 
@@ -225,22 +225,21 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none"></h1>
+            <h1 style="display: none">svn报错sqllite database disk image is malformed 的解决方法</h1>
             
             <div class="markdown-body">
-              <p>title: 23种设计模式-代理模式-动态代理<br>date: 2021-06-30 15:25:14<br>tags:</p>
-<p>代理模式</p>
-<p>比如Source需要实现一个方法的增强，但是不能在a源码上面直接修改，因为Source被其他引用了，不符合开闭原则(对修改关闭，对增加开放)。</p>
-<p>此时可以通过一个代理对象Invoke，实现Source的相同功能，构造方法中传入Source，在这个相同的功能上面做方法增强。</p>
-<p>这时创建一个代理对象Invoke传入Source就可以实现方法的增强，并且没有修改源文件</p>
-<p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210630104610608.png" srcset="/img/loading.gif" lazyload alt="image-20210630104610608"></p>
-<p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210630104610608.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210630104655327.png" srcset="/img/loading.gif" lazyload alt="image-20210630104655327"></p>
-<p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210630104804105.png" srcset="/img/loading.gif" lazyload alt="image-20210630104804105"></p>
-<p>动态代理</p>
-<p>不可能为每个需要增强方法的类都创建一个代理对象，动态代理就解决了这种问题，其核心问题增强的方法是一定的，怎么让代理对象动态的获取被代理对象要执行的方法，其实是代理对象在初始化的时候利用了反射，获取了被代理对象的classloader和interface，这样代理对象就可以实现被代理对象的原方法加上自己的增强方法实现动态代理</p>
-<p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210630104818777.png" srcset="/img/loading.gif" lazyload alt="image-20210630104818777"></p>
-<p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210630104717387.png" srcset="/img/loading.gif" lazyload alt="image-20210630104717387"></p>
+              <p>​                        </p>
+<p>在使用svn的时候可能会出现莫名的报错，比如这个可能是一些异常终止造成的。</p>
+<p>其实解决这个问题也很简单，网上也有很多解决方法，比如重新checkout新的代码即可，但是这样会造成本地未提交代码丢失</p>
+<p>还有安装sqlit3，执行一些命令，寻找问题原因，但是这样会比较费时，如果比较着急使用就不太合适</p>
+<p>所以这里记录一下另外一种简单的方式</p>
+<p>可以新拉一个项目(每个项目根目录都有一个.svn文件夹，这里可能是隐藏了 找不到 可以使用搜索方式进行搜索.svn 获取取消隐藏)</p>
+<p>在项目根目录下找到以下文件将新代码中的文件替换到老项目中</p>
+<p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622153118219.png" srcset="/img/loading.gif" lazyload alt="image-20210622153118219"></p>
+<p>然后再勾选红框中的对勾 重启idea后再取消红框中的对勾 即恢复提交</p>
+<p>![]<a target="_blank" rel="noopener" href="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622160552195.png">https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622160552195.png</a></p>
+<p>另外由于一些误操作有时也可能会报该文件夹中缺少某些文件，同样用正常的该文件夹进行覆盖即可解决 </p>
+<p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210622153714600.png" srcset="/img/loading.gif" lazyload alt="image-20210622153714600"></p>
 
             </div>
             <hr>
@@ -261,9 +260,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/07/07/hexo+github%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E5%8D%9A%E5%AE%A2/">
+                      <a href="/2021/06/30/redis%E6%80%BB%E7%BB%93/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile"></span>
+                        <span class="hidden-mobile">redis总结</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -271,8 +270,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/07/07/test/">
-                        <span class="hidden-mobile">test</span>
+                      <a href="/2021/06/22/hexo+github%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E5%8D%9A%E5%AE%A2/">
+                        <span class="hidden-mobile">hexo+github快速搭建自己的博客</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
