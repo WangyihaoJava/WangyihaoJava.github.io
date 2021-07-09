@@ -182,6 +182,44 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2021/07/09/jvm%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E6%80%BB%E7%BB%93/" target="_self">
+          jvm内存模型总结
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2021/07/09/jvm%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E6%80%BB%E7%BB%93/" target="_self">
+          
+          
+            
+          
+          
+首先java代码通过编译器编译成class字节码文件，通过类加载系统经过 加载–&gt;验证–&gt;准备–&gt;解析–初始化等一系列操作加载到方法区，当然解析的过程会针对静态的方法替换为指向内存(数据所存内存指针，句柄等)的直接引用，另外动态链接是在方法运行时将符号引用替换为内存引用
+方法区和堆会双向引用，因为堆里面存的是创建的对象，对象头也在这里，对象头有指针，指针指向的方法区中的类元数据
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-07-09 16:03" pubdate>
+              2021-07-09
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2021/06/30/23%E7%A7%8D%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F-%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/" target="_self">
           23种设计模式-代理模式-动态代理
         </a>
