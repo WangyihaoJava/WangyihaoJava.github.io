@@ -4,6 +4,19 @@
   
   
   <entry>
+    <title>synchronized</title>
+    <link href="/2021/07/16/synchronized/"/>
+    <url>/2021/07/16/synchronized/</url>
+    
+    <content type="html"><![CDATA[<h2 id="锁优化"><a href="#锁优化" class="headerlink" title="锁优化"></a>锁优化</h2><p>如果一个对象在方法中创建 没有被外部引用 在方法的结束该对象也就处于没有指向的状态 完全可以把它在栈空间创建 随着方法的结束而销毁<br>(逃逸分析)</p><p>是建立在逃逸分析的基础上 去除不可能存在竞争的锁<br>(锁消除)</p><p>相同的代码块经过多次加锁 在不影响执行结果的基础上 可以将这些代码放在同一个同步块里面 减少锁的开销<br>(锁粗化)</p><p>锁升级 是单向的不可逆</p><p>无锁</p><p>偏向锁</p><p>markwod锁标记且00 多个线程交替执行升级轻量级锁</p><p>自旋锁</p><p>重量级锁</p><p>markwod锁标记且01 是否偏向为0<br>(无锁)</p><p>markwod锁标记且01 是否偏向为1 当只有一个线程的时候会升级成这种状态 jvm启动的时候会延迟偏向锁<br>(偏向锁)</p><p>轻量级锁失败后 为了避免线程被挂起 会进行自旋优化 因为大多数线程持有锁的时候不会太长 如果现在直接把线程挂起会经历从用户态切换到内核态 操作比较重 消耗时间比较长 其实自旋就是空循环<br>(自旋锁)</p><p>对象内存布局</p><p>对象头 8个字节 64bit</p><p>markword</p><p>metadata</p><h2 id="数组长度"><a href="#数组长度" class="headerlink" title="数组长度"></a>数组长度</h2><p>markword主要存放对象年龄  线程id 锁标志 是否偏向 epoch 等数据 32位和64位操作系统分别占 32bit和64bit  不过64位也会开启指针压缩到32bit</p><p>实例数据</p><h2 id="对齐填充数据"><a href="#对齐填充数据" class="headerlink" title="对齐填充数据"></a>对齐填充数据</h2><p>由于虚拟机要求 对象起始地址必须是8字节的整数倍。填充数据不是必须存在的，仅仅是为了字节对齐；</p><h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><p>主要有三种：加在静态方法或者成员方法上锁的当前方法，锁加在当前的类对象的对象头上，如果在方法里面的同步块里面锁的是当前同步块里面的内容，有三种方式object object.class this 三种方式都能实现代码的同步 区别在于粒度不同，应用场景不同可以选择不同的方式  this是把锁标识加在当前类上面粒度比较大 而object可以指定一个类    另外 注意在方法中禁止在多个静态方法中加synchronized 因为他们都是加在同一个类上面 也就是当前类 调用该方法时候qps会受到严重影响 因为调用两个方法需要先获取锁 如果第一个方法没有释放锁 调用第二个会一直阻塞  最后禁止在方法里面使用大量sout 因为里面也是用到了synchronized</p><h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>synchronized底层基于jvm的内置锁 通过monitor来实现的 简单来说就是当加了 synchronized关键字之后 编译生成字节码后会翻译成monitorenter和monitorexit 这两条指令会在需要同步的代码块的起止位置     如果加了synchronized字符串常量池中会多ACC_SYNCHRONIZED jvm就是根据这个标识来判断是否有加锁 如果有这标识 会先获取monitor</p><h2 id="monitor"><a href="#monitor" class="headerlink" title="monitor"></a>monitor</h2><p>为什么要获取monitor 因为monitor是当每个对象创建的使用会一起被创建 类似一个监视器 当获取这个对象的monitor时该对象会处于锁定状态 jvm就是通过进入和退出monitor来实现加锁和解锁的操作  比如说线程a进入monitor 进入数会加1如果a再次进入这个进入数还会加1 如果b想要进入的话只能阻塞 直到进入数为0的时候才能进入</p><h2 id="MESI"><a href="#MESI" class="headerlink" title="MESI"></a>MESI</h2><p>当一个cpu从内存中读取数据的时候会将当前缓存行中的状态改为E独占，当另外一个cpu也去读取这个数据的时候，第一个cpu会检测到地址冲突，为了解决这个问题两个cpu都会将缓存行改为S共享状态         修改时会将要修改的值设置为M修改状态 并且通知其他缓存了该值的cpu 并把数据写入到内存   其他cpu接收到通知后把自己的数据改为I无效状态 重新到内存里面读取      注意这里修改完数据不是立即写入内存的 而是把修改的数据缓存到一个storebuffer里面 因为传递消息是需要时间的 这样可以提升效率</p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>jvm内存模型总结</title>
     <link href="/2021/07/09/jvm%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E6%80%BB%E7%BB%93/"/>
     <url>/2021/07/09/jvm%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E6%80%BB%E7%BB%93/</url>

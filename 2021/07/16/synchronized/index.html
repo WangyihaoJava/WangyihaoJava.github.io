@@ -18,7 +18,7 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-  <title>jvm内存模型总结 - 博客空间</title>
+  <title>synchronized - 博客空间</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
 
@@ -163,7 +163,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="jvm内存模型总结">
+            <span class="h2" id="subtitle" title="synchronized">
               
             </span>
 
@@ -173,8 +173,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-07-09 16:03" pubdate>
-        2021年7月9日 下午
+      <time datetime="2021-07-16 16:47" pubdate>
+        2021年7月16日 下午
       </time>
     </span>
   
@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      778 字
+      1.2k 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      7
+      12
        分钟
     </span>
   
@@ -225,23 +225,32 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">jvm内存模型总结</h1>
+            <h1 style="display: none">synchronized</h1>
             
             <div class="markdown-body">
-              <p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210709110547362.png" srcset="/img/loading.gif" lazyload alt="image-20210709110547362"></p>
-<p>首先java代码通过编译器编译成class字节码文件，通过类加载系统经过 加载–&gt;验证–&gt;准备–&gt;解析–初始化等一系列操作加载到方法区，当然解析的过程会针对静态的方法替换为指向内存(数据所存内存指针，句柄等)的直接引用，另外动态链接是在方法运行时将符号引用替换为内存引用</p>
-<p>方法区和堆会双向引用，因为堆里面存的是创建的对象，对象头也在这里，对象头有指针，指针指向的方法区中的类元数据，当然如果创建一个静态的对象，方法区中的内存地址会指向堆中该对象</p>
-<p><strong>栈空间</strong>：每个线程会有自己的栈空间是独有的，可以把每个栈由各种栈帧组成，每个方法代表一个栈帧，每个栈空间默认是1m，当然也可以通过参数-Xss设置栈大小，设置的越小可以创建的线程越多，当然可以存放的栈帧就越少，具体需要根据业务需要进行设置</p>
-<p>程序计数器：记录 程序执行到哪个位置，代码最终在底层会转为字节码，就是记录字节码的行号</p>
-<p>本地方法栈：很多被native修饰的方法是c++实现的本地方法，所以如果调用这些方法也需要栈空间，当然也是私有的</p>
-<p>每个栈帧包含以下内容</p>
-<p>局部变量表：主要存储变量值，对象的内存地址</p>
-<p>操作数栈：存储临时变量值，对临时变量值进行运算</p>
-<p>动态链接：因为编译后的class文件，底层是由各种符号引用实现的，这里就是把符号引用转为直接引用</p>
-<p>方法出口：每个方法执行结束后要知道当前栈帧的位置，方法出口就是记录当前执行到哪个位置</p>
-<p>堆空间：当eden区满了之后会触发minorgc，将eden区存活的对象放进s0区，存活的对象年龄加一，第二次满了后会同时清理eden和s0区，将存活的对象放进s1区，这样周而复始，当年龄达到15岁之后会挪到老年代，为什么是15岁，因为对象的年龄是存储在对象头中，分配了4个bit位最大只能存储15。</p>
-<p>什么样的对象会直接进入老年代，大对象，如果往s区挪动的时候，存活这批对象大小大于s区的一半，就会将s区中大于这批对象中最大年龄的对象放进老年代。</p>
-<p>逃逸分析：就是分析对象的作用范围，如果只是在一个方法中定义，没有被方法以外所引用，随着方法的结束这个对象就是无效的对象了，那么就可以给这个对象分配在栈内存，随着方法的结束被回收掉</p>
+              <h2 id="锁优化"><a href="#锁优化" class="headerlink" title="锁优化"></a>锁优化</h2><p>如果一个对象在方法中创建 没有被外部引用 在方法的结束该对象也就处于没有指向的状态 完全可以把它在栈空间创建 随着方法的结束而销毁<br>(逃逸分析)</p>
+<p>是建立在逃逸分析的基础上 去除不可能存在竞争的锁<br>(锁消除)</p>
+<p>相同的代码块经过多次加锁 在不影响执行结果的基础上 可以将这些代码放在同一个同步块里面 减少锁的开销<br>(锁粗化)</p>
+<p>锁升级 是单向的不可逆</p>
+<p>无锁</p>
+<p>偏向锁</p>
+<p>markwod锁标记且00 多个线程交替执行升级轻量级锁</p>
+<p>自旋锁</p>
+<p>重量级锁</p>
+<p>markwod锁标记且01 是否偏向为0<br>(无锁)</p>
+<p>markwod锁标记且01 是否偏向为1 当只有一个线程的时候会升级成这种状态 jvm启动的时候会延迟偏向锁<br>(偏向锁)</p>
+<p>轻量级锁失败后 为了避免线程被挂起 会进行自旋优化 因为大多数线程持有锁的时候不会太长 如果现在直接把线程挂起会经历从用户态切换到内核态 操作比较重 消耗时间比较长 其实自旋就是空循环<br>(自旋锁)</p>
+<p>对象内存布局</p>
+<p>对象头 8个字节 64bit</p>
+<p>markword</p>
+<p>metadata</p>
+<h2 id="数组长度"><a href="#数组长度" class="headerlink" title="数组长度"></a>数组长度</h2><p>markword主要存放对象年龄  线程id 锁标志 是否偏向 epoch 等数据 32位和64位操作系统分别占 32bit和64bit  不过64位也会开启指针压缩到32bit</p>
+<p>实例数据</p>
+<h2 id="对齐填充数据"><a href="#对齐填充数据" class="headerlink" title="对齐填充数据"></a>对齐填充数据</h2><p>由于虚拟机要求 对象起始地址必须是8字节的整数倍。填充数据不是必须存在的，仅仅是为了字节对齐；</p>
+<h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><p>主要有三种：加在静态方法或者成员方法上锁的当前方法，锁加在当前的类对象的对象头上，如果在方法里面的同步块里面锁的是当前同步块里面的内容，有三种方式object object.class this 三种方式都能实现代码的同步 区别在于粒度不同，应用场景不同可以选择不同的方式  this是把锁标识加在当前类上面粒度比较大 而object可以指定一个类    另外 注意在方法中禁止在多个静态方法中加synchronized 因为他们都是加在同一个类上面 也就是当前类 调用该方法时候qps会受到严重影响 因为调用两个方法需要先获取锁 如果第一个方法没有释放锁 调用第二个会一直阻塞  最后禁止在方法里面使用大量sout 因为里面也是用到了synchronized</p>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>synchronized底层基于jvm的内置锁 通过monitor来实现的 简单来说就是当加了 synchronized关键字之后 编译生成字节码后会翻译成monitorenter和monitorexit 这两条指令会在需要同步的代码块的起止位置     如果加了synchronized字符串常量池中会多ACC_SYNCHRONIZED jvm就是根据这个标识来判断是否有加锁 如果有这标识 会先获取monitor</p>
+<h2 id="monitor"><a href="#monitor" class="headerlink" title="monitor"></a>monitor</h2><p>为什么要获取monitor 因为monitor是当每个对象创建的使用会一起被创建 类似一个监视器 当获取这个对象的monitor时该对象会处于锁定状态 jvm就是通过进入和退出monitor来实现加锁和解锁的操作  比如说线程a进入monitor 进入数会加1如果a再次进入这个进入数还会加1 如果b想要进入的话只能阻塞 直到进入数为0的时候才能进入</p>
+<h2 id="MESI"><a href="#MESI" class="headerlink" title="MESI"></a>MESI</h2><p>当一个cpu从内存中读取数据的时候会将当前缓存行中的状态改为E独占，当另外一个cpu也去读取这个数据的时候，第一个cpu会检测到地址冲突，为了解决这个问题两个cpu都会将缓存行改为S共享状态         修改时会将要修改的值设置为M修改状态 并且通知其他缓存了该值的cpu 并把数据写入到内存   其他cpu接收到通知后把自己的数据改为I无效状态 重新到内存里面读取      注意这里修改完数据不是立即写入内存的 而是把修改的数据缓存到一个storebuffer里面 因为传递消息是需要时间的 这样可以提升效率</p>
 
             </div>
             <hr>
@@ -262,18 +271,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/07/16/synchronized/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">synchronized</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/06/30/23%E7%A7%8D%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F-%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/">
-                        <span class="hidden-mobile">23种设计模式-代理模式-动态代理</span>
+                      <a href="/2021/07/09/jvm%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E6%80%BB%E7%BB%93/">
+                        <span class="hidden-mobile">jvm内存模型总结</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
