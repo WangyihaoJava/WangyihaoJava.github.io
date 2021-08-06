@@ -18,7 +18,7 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-  <title>synchronized - 博客空间</title>
+  <title>Spring-IOC+AOP - 博客空间</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
 
@@ -163,7 +163,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="synchronized">
+            <span class="h2" id="subtitle" title="Spring-IOC+AOP">
               
             </span>
 
@@ -173,8 +173,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-07-16 16:47" pubdate>
-        2021年7月16日 下午
+      <time datetime="2021-07-29 16:47" pubdate>
+        2021年7月29日 下午
       </time>
     </span>
   
@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.2k 字
+      1.4k 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      12
+      14
        分钟
     </span>
   
@@ -225,32 +225,53 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">synchronized</h1>
+            <h1 style="display: none">Spring-IOC+AOP</h1>
             
             <div class="markdown-body">
-              <h2 id="锁优化"><a href="#锁优化" class="headerlink" title="锁优化"></a>锁优化</h2><p>如果一个对象在方法中创建 没有被外部引用 在方法的结束该对象也就处于没有指向的状态 完全可以把它在栈空间创建 随着方法的结束而销毁<br>(逃逸分析)</p>
-<p>是建立在逃逸分析的基础上 去除不可能存在竞争的锁<br>(锁消除)</p>
-<p>相同的代码块经过多次加锁 在不影响执行结果的基础上 可以将这些代码放在同一个同步块里面 减少锁的开销<br>(锁粗化)</p>
-<p>锁升级 是单向的不可逆</p>
-<p>无锁</p>
-<p>偏向锁</p>
-<p>markwod锁标记且00 多个线程交替执行升级轻量级锁</p>
-<p>自旋锁</p>
-<p>重量级锁</p>
-<p>markwod锁标记且01 是否偏向为0<br>(无锁)</p>
-<p>markwod锁标记且01 是否偏向为1 当只有一个线程的时候会升级成这种状态 jvm启动的时候会延迟偏向锁<br>(偏向锁)</p>
-<p>轻量级锁失败后 为了避免线程被挂起 会进行自旋优化 因为大多数线程持有锁的时候不会太长 如果现在直接把线程挂起会经历从用户态切换到内核态 操作比较重 消耗时间比较长 其实自旋就是空循环<br>(自旋锁)</p>
-<p>对象内存布局</p>
-<p>对象头 8个字节 64bit</p>
-<p>markword</p>
-<p>metadata</p>
-<h2 id="数组长度"><a href="#数组长度" class="headerlink" title="数组长度"></a>数组长度</h2><p>markword主要存放对象年龄  线程id 锁标志 是否偏向 epoch 等数据 32位和64位操作系统分别占 32bit和64bit  不过64位也会开启指针压缩到32bit</p>
-<p>实例数据</p>
-<h2 id="对齐填充数据"><a href="#对齐填充数据" class="headerlink" title="对齐填充数据"></a>对齐填充数据</h2><p>由于虚拟机要求 对象起始地址必须是8字节的整数倍。填充数据不是必须存在的，仅仅是为了字节对齐；</p>
-<h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><p>主要有三种：加在静态方法或者成员方法上锁的当前方法，锁加在当前的类对象的对象头上，如果在方法里面的同步块里面锁的是当前同步块里面的内容，有三种方式object object.class this 三种方式都能实现代码的同步 区别在于粒度不同，应用场景不同可以选择不同的方式  this是把锁标识加在当前类上面粒度比较大 而object可以指定一个类    另外 注意在方法中禁止在多个静态方法中加synchronized 因为他们都是加在同一个类上面 也就是当前类 调用该方法时候qps会受到严重影响 因为调用两个方法需要先获取锁 如果第一个方法没有释放锁 调用第二个会一直阻塞  最后禁止在方法里面使用大量sout 因为里面也是用到了synchronized</p>
-<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>synchronized底层基于jvm的内置锁 通过monitor来实现的 简单来说就是当加了 synchronized关键字之后 编译生成字节码后会翻译成monitorenter和monitorexit 这两条指令会在需要同步的代码块的起止位置     如果加了synchronized字符串常量池中会多ACC_SYNCHRONIZED jvm就是根据这个标识来判断是否有加锁 如果有这标识 会先获取monitor</p>
-<h2 id="monitor"><a href="#monitor" class="headerlink" title="monitor"></a>monitor</h2><p>为什么要获取monitor 因为monitor是当每个对象创建的使用会一起被创建 类似一个监视器 当获取这个对象的monitor时该对象会处于锁定状态 jvm就是通过进入和退出monitor来实现加锁和解锁的操作  比如说线程a进入monitor 进入数会加1如果a再次进入这个进入数还会加1 如果b想要进入的话只能阻塞 直到进入数为0的时候才能进入</p>
-<h2 id="MESI"><a href="#MESI" class="headerlink" title="MESI"></a>MESI</h2><p>当一个cpu从内存中读取数据的时候会将当前缓存行中的状态改为E独占，当另外一个cpu也去读取这个数据的时候，第一个cpu会检测到地址冲突，为了解决这个问题两个cpu都会将缓存行改为S共享状态         修改时会将要修改的值设置为M修改状态 并且通知其他缓存了该值的cpu 并把数据写入到内存   其他cpu接收到通知后把自己的数据改为I无效状态 重新到内存里面读取      注意这里修改完数据不是立即写入内存的 而是把修改的数据缓存到一个storebuffer里面 因为传递消息是需要时间的 这样可以提升效率</p>
+              <p><img src="https://gitee.com/wangyihaogit/blog_imag/raw/master/imag/image-20210806163141604.png" srcset="/img/loading.gif" lazyload alt="image-20210806163141604"></p>
+<p>beanfactory就是一个顶层的类用来创建bean</p>
+<p>factorybean是一个接口 实现它的类就是一个特殊的类 最终去调用他的重写的方面getobject返回的bean</p>
+<p>@configuration加与不加的区别 比如一个bean里面有个属性是一个对象 加的话会从容器里面通过getbean拿这个对象 保证这个对象是单例的 不加话配置类里面bean和bean之间引用就是普通的调用 每次创建一个对象 不受ioc容器控制</p>
+<p>beanname覆盖</p>
+<p>如果@compont是通过scan扫描的如果扫描出来两个名字一样的类 会报错</p>
+<p>但是如果@compont和@bean中两个名字一样的类 @bean会把前者覆盖 因为@bean是后执行的是在getbean之后解析成bean定义的 前者是在getbean之前进行解析成bean定义的</p>
+<p>三级缓存</p>
+<p>一级缓存解决循环依赖会有多线程情况下获取到不完整的bean</p>
+<p>二级缓存出现解决了这个问题 将成熟bean和纯净bean分离 成熟的bean放进一级缓存 纯净bean二级缓存</p>
+<p>为什么还要三级缓存 spring是想如果没有循环依赖的ban还是在初始化之后通过beanpostprocessor进行创建动态代理这样也符合单一职责 接耦 所以它使用了一个钩子函证钩子函数就是beanpostprocessor里面进行创建动态代理 用刚刚在put二级缓存的时候换成使用这个方法解决aop循环依赖问题 其实使用二级缓存同样也可以解决aop循环依赖 只不过spring这样实现更加规范</p>
+<p>spring为什么没有解决构造循环依赖</p>
+<p>因为构造函数还在实例化中 没有实例化完根本拿不到这个bean 不存在解决循环依赖</p>
+<p>spring为什么没有解决多例循环依赖</p>
+<p>因为多例没有放到缓存里面去 如果多例有循环依赖直接抛异常</p>
+<p>AOP</p>
+<p>前置通知后置通知都是通过责任链方式调用</p>
+<p>责任链必须要有一个统一的抽象 这样他们才能依次调用 要么用循环调用要么用递归</p>
+<p>aop实现流程主要分为三大步</p>
+<p>解析切面</p>
+<p>在第一个beanpostprocessor后置处理器里面扫描所有带@aspactj注解的类 将类里面的@before等注解生成一个advisor advisor包含advise和pointcut</p>
+<p>创建动态代理</p>
+<p>初始化之后创建动态代理</p>
+<p>会进行初始化</p>
+<p>拿到刚刚解析的所有的advisor跟当前正在创建的bean进行匹配(怎么匹配就是调用aspectj里面的api先做粗筛再做精筛)匹配完成后会加到一个list里面去 如果list里面有说明满足条件 为当前正在创建的bean生成一个动态代理 有实现接口实现就使用jdk动态代理 没有就用cjlib动态代理 </p>
+<p>调用代理</p>
+<p>将advisor转换成intercepter 在intercepter 进行递归责任链</p>
+<p>aop的调用代理与事务的调用代理不一样 aop是我们自定义的@before 而事务是内置的</p>
+<p>aop有几种实现方式</p>
+<p>基于接口 就是spring最初的方式</p>
+<p>基于注解 就是后来升级的方式</p>
+<p>基于xml</p>
+<p>在本类里面如果是jdk动态代理调用本类里面的方法不会执行动态代理的方法，因为jdk使用的是反射每次都会生成.class然后都直接调用方法，</p>
+<p>这也就是为什么事务在同一个类里面调用会失效的原因了，它不会对同一个类里面的方法进行重复增强。</p>
+<p>jdk动态代理只会生成一个.class文件 </p>
+<p>而cjlib会生成多个.class文件 调用动态代理每次会路由找到cjlib动态代理类 再次调用还会来到这个路由 这就是在一个类里面多次调用只会生成一个动态代理类的原因 cjlib在本类能重复增强的原因就是他是通过继承的方式 直接调用实现了被代理类的子类（动态代理类）可以作为@config加与不加区别中扩展</p>
+<p>jdk和cjlib</p>
+<p>cjlib石通过给每一个方法创建一个动态代理对象 会对每个方法生成一个hashcode索引也可以称为路由 每次调用的时候通过这个路由获取动态代理对象 </p>
+<p> jdk是通过反射的方式</p>
+<p>jdk是自己生成的字节码文件 而cglib是通过asm生成多个字节码文件 启动时候可能cglib 略慢</p>
+<p>代理原理区别</p>
+<p>jdk会传入一个实例对象就是目标对象 然后通过对实例对象的反射实现增强</p>
+<p>cglib通过继承的方式 会先将方法进行hashcode然后再回来去调用这个方法 去执行父类的方法就是增强类的方法</p>
+<p>通过继承的方式就是 继承被代理的类 此时被代理类就是父类 增强的类就是子类 通过动态代理调用父类的select方法 他调用insert方法又会跑到子类的insert方法这就实现了重复拿到增强类也就是子类的方法 这就是本类调用会重复增强的原因</p>
 
             </div>
             <hr>
@@ -271,9 +292,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/07/29/Spring-IOC+AOP/">
+                      <a href="/2021/08/03/mysql%E4%B9%8B%E7%B4%A2%E5%BC%95%E5%92%8C%E4%BA%8B%E5%8A%A1%E7%9A%84%E5%8E%9F%E7%90%86/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Spring-IOC+AOP</span>
+                        <span class="hidden-mobile">mysql之索引和事务的原理</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -281,8 +302,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/07/09/jvm%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E6%80%BB%E7%BB%93/">
-                        <span class="hidden-mobile">jvm内存模型总结</span>
+                      <a href="/2021/07/16/synchronized/">
+                        <span class="hidden-mobile">synchronized</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
