@@ -182,6 +182,88 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2021/08/03/mysql%E4%B9%8B%E7%B4%A2%E5%BC%95%E5%92%8C%E4%BA%8B%E5%8A%A1%E7%9A%84%E5%8E%9F%E7%90%86/" target="_self">
+          mysql之索引和事务的原理
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2021/08/03/mysql%E4%B9%8B%E7%B4%A2%E5%BC%95%E5%92%8C%E4%BA%8B%E5%8A%A1%E7%9A%84%E5%8E%9F%E7%90%86/" target="_self">
+          
+          
+            
+          
+          索引篇为什么不用二叉树 因为他的树的深度会越来越高 如果如果往一边倒
+红黑树也是一样虽然他会自动平衡 但是在海量数据下他的树高度还是很高
+b树就是为了解决树的高度 横向放的元素越多 树的高度越低 存储的数据越多
+
+B+树是b树的变种 非叶子结点冗余索引 为了存储更多的数据
+从左到右依次递增排序
+​    
+B+树是怎么查找数据的 首先先把根节点加载到内存中通过类似二分查找定位大概在哪个区间找到对应
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-08-03 20:43" pubdate>
+              2021-08-03
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2021/07/29/Spring-IOC+AOP/" target="_self">
+          Spring-IOC+AOP
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2021/07/29/Spring-IOC+AOP/" target="_self">
+          
+          
+            
+          
+          
+beanfactory就是一个顶层的类用来创建bean
+factorybean是一个接口 实现它的类就是一个特殊的类 最终去调用他的重写的方面getobject返回的bean
+@configuration加与不加的区别 比如一个bean里面有个属性是一个对象 加的话会从容器里面通过getbean拿这个对象 保证这个对象是单例的 不加话配置类里面bean和bean之间引用就是普通的调用 每次创建一
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-07-29 16:47" pubdate>
+              2021-07-29
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2021/07/16/synchronized/" target="_self">
           synchronized
         </a>
