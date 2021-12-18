@@ -18,7 +18,7 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-  <title>rocketMQ常见问题以及原理 - 博客空间</title>
+  <title>经典算法之KMP - 博客空间</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
 
@@ -163,7 +163,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="rocketMQ常见问题以及原理">
+            <span class="h2" id="subtitle" title="经典算法之KMP">
               
             </span>
 
@@ -173,8 +173,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-08-05 21:45" pubdate>
-        2021年8月5日 晚上
+      <time datetime="2021-11-16 19:47" pubdate>
+        2021年11月16日 晚上
       </time>
     </span>
   
@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1k 字
+      816 字
     </span>
   
 
@@ -225,62 +225,12 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">rocketMQ常见问题以及原理</h1>
+            <h1 style="display: none">经典算法之KMP</h1>
             
             <div class="markdown-body">
-              <p>消息存盘速度</p>
-<p>如果磁盘用的合理 磁盘的速度完全匹配网络传输速度目前的高性能磁盘，顺序写速度</p>
-<p>可以达到600MB/s 但是随机读写只有100k/s rocketmq采用的是顺序读写</p>
-<p>另外使用的零拷贝中mmap技术实现减少用户态的切换</p>
-<p>存储结构主要有三块</p>
-<p>CommitLog 消息存储</p>
-<p>ConsumerQueue 消息消费到哪的索引</p>
-<p>IndexFile 提供一些根据key或者时间区查询的方式</p>
-<p>abort 文件在启动时候创建正常关闭时候删除 如果非正常关闭不会删除 可以通过这个文件来判断是否正常</p>
-<p>刷盘 </p>
-<p>同步 安全不会产生丢消息 会影响性能</p>
-<p>异步 性能比较高 可能会丢消息</p>
-<p>主从复制</p>
-<p>同步</p>
-<p>异步</p>
-<p>负载均衡</p>
-<p>生产者会轮询目标下topic所有MessageQueue</p>
-<p>也可以指定MessageQueue往一个里面发消息</p>
-<p>也可以平均分配到各个MessageQueue</p>
-<p>也可以设置同机房优先分配</p>
-<p>重试消息 </p>
-<p>如果消费失败可以进行重试 如果一直失败 超过16次会进入到死信队列</p>
-<p>死信队列</p>
-<p>需要人工处理</p>
-<p>消费幂等</p>
-<p>在互联网尤其是网络不稳定情况容易出现</p>
-<p>发送时消息重复</p>
-<p>投递时消息重复</p>
-<p>负载均衡时消息重复</p>
-<p>rocketmq保证分布式事务</p>
-<p>首先生产者在生产消息前会向mq发一个half消息 mq收到消息后会响应一个half这样保证mq没有宕机</p>
-<p>然后生产者执行本地事务 正常提交或者回滚都会发到mq 正常的就正常消费 回滚的就丢弃</p>
-<p>因为提交本地事务有可能时间比较长 mq 也不会一直等 如果超过时间后 mq定期回查本地事务状态</p>
-<p>生产者收到回查请求后会进行回查本地事务状态 然后将状态进行提交到mq</p>
-<p>Dledger保证集群高可用</p>
-<p>在rocketmq4.5之前是不能保证高可用的 在这个版本之后引入Dledger保证集群的高可用</p>
-<p>它会接管commitlog消息存储</p>
-<p>每个节点有三个状态，Leader，follower和candidate 初始状态大家都是follower 集群内部会有一个超市信号</p>
-<p>大家都变成candidate 向其他成员发送请求 获得票数最多的就会成为leader 没有选出就会再次选举</p>
-<p>Leader 会定期往follower发送心跳保证自己的地位 如果follower长时间没有收到心跳就会转为candidate向其他节点发送请求 超过半数就会成为leader</p>
-<p>在raft协议中有一个逻辑时钟的概念叫做term</p>
-<p>也就是每到这term时间会进行重新选举 选举成功的节点会保持一个leader的状态 这也就保证了在同一时间内只会有一个leader 不会产生脑裂的问题</p>
-<p>两阶段提交</p>
-<p>leader收到数据后会将数据标为uncommitted 然后将数据同步给从节点 从节点接收完数据后会返回给leader一个ack 当超过一半的从节点都返回了ack leader会将这个数据状态改为commited</p>
-<p>这样就保证了如果宕机重启发现这个标识会进行重新同步</p>
-<p>rocketmq如何保证不重复消费</p>
-<p>在RocketMQ中，是无法保证每个消息只被投递一次的，所以要在业务上</p>
-<p>自行来保证消息消费的幂等性。</p>
-<p>而要处理这个问题，RocketMQ的每条消息都有一个唯一的MessageId，这个参数在多次投递的过程中</p>
-<p>是不会改变的，所以业务上可以用这个MessageId来作为判断幂等的关键依据。</p>
-<p>但是，这个MessageId是无法保证全局唯一的，也会有冲突的情况。所以在一些对幂等性要求严格的场</p>
-<p>景，最好是使用业务上唯一的一个标识比较靠谱。</p>
-
+              <p>kmp解决的问题是 一个字符串包不包含另一个字符串 如果包含返回开始的位置 不包含返回-1</p>
+<p>暴力方法也可以做 从第一个位置往下配 0(n * m)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Code_KMP</span> </span>&#123;<br><br>   <span class="hljs-comment">/**</span><br><span class="hljs-comment">    * 求某个位置字符最大前缀和后缀的长度</span><br><span class="hljs-comment">    * 前缀不能包含最后一个字符 后缀也不能包含第一个字符 对于第一个字符来讲 人为规定为0</span><br><span class="hljs-comment">    *</span><br><span class="hljs-comment">    * kmp加速的过程就是 因为我可以知道str2的最大前缀和后缀 所以按照暴力匹配的方式</span><br><span class="hljs-comment">    * 我在第二次进行匹配的时候不用进行全值匹配</span><br><span class="hljs-comment">    * 我可以在str2中获取的后缀在str1中对应位置开始 与 str2的前缀部分小加速后的字符串进行匹配(也就是str1去掉后缀第一个字符和str2去掉前缀的第一个字符)</span><br><span class="hljs-comment">    * 如果没匹配上 我应该用getnext的值作为下标的位置跟str1中去匹配 如果再没匹配上循环次操作直到等于-1还没匹配上 那么就不包含</span><br><span class="hljs-comment">    * 如果匹配上了就一起往下走 直到str2没了</span><br><span class="hljs-comment">    *</span><br><span class="hljs-comment">    * 这样其实是舍弃了str1后缀之前的匹配部分 为什么舍弃 因为这一部分一定配不出来 为什么 因为如果舍弃的部分能配出来 那么舍弃的部分在str2中等量的长度前缀一定是相等的</span><br><span class="hljs-comment">    * 这样的话就说明str2中有更加长的前缀和后缀 这跟我们获取str2的前缀后缀是矛盾的 除非算错了 否则这种情况不可能出现</span><br><span class="hljs-comment">    * <span class="hljs-doctag">@param</span> s</span><br><span class="hljs-comment">    * <span class="hljs-doctag">@param</span> m</span><br><span class="hljs-comment">    * <span class="hljs-doctag">@return</span></span><br><span class="hljs-comment">    */</span><br><br>   <span class="hljs-comment">//kmp主逻辑</span><br>   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> <span class="hljs-title">getIndexOf</span><span class="hljs-params">(String s, String m)</span> </span>&#123;<br>      <span class="hljs-keyword">if</span> (s == <span class="hljs-keyword">null</span> || m == <span class="hljs-keyword">null</span> || m.length() &lt; <span class="hljs-number">1</span> || s.length() &lt; m.length()) &#123;<br>         <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;<br>      &#125;<br>      <span class="hljs-keyword">char</span>[] ss = s.toCharArray();<br>      <span class="hljs-keyword">char</span>[] ms = m.toCharArray();<br>      <span class="hljs-keyword">int</span> si = <span class="hljs-number">0</span>;<br>      <span class="hljs-keyword">int</span> mi = <span class="hljs-number">0</span>;<br>      <span class="hljs-keyword">int</span>[] next = getNextArray(ms);<br>      <span class="hljs-keyword">while</span> (si &lt; ss.length &amp;&amp; mi &lt; ms.length) &#123;<br>         <span class="hljs-comment">//如果s1和s2相等 那么同时往下走进行比较</span><br>         <span class="hljs-keyword">if</span> (ss[si] == ms[mi]) &#123;<br>            si++;<br>            mi++;<br>            <span class="hljs-comment">//next数组中记录着的是这个字符位置的最大前缀和后缀的长度</span><br>         &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (next[mi] == -<span class="hljs-number">1</span>) &#123;<br>            si++;<br>            <span class="hljs-comment">//跳过前缀的位置 用前缀的后一个字符进行比较</span><br>         &#125; <span class="hljs-keyword">else</span> &#123;<br>            mi = next[mi];<br>         &#125;<br>      &#125;<br>      <span class="hljs-keyword">return</span> mi == ms.length ? si - mi : -<span class="hljs-number">1</span>;<br>   &#125;<br><br>   <span class="hljs-comment">//getnext</span><br>   <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span>[] getNextArray(<span class="hljs-keyword">char</span>[] ms) &#123;<br>      <span class="hljs-keyword">if</span> (ms.length == <span class="hljs-number">1</span>) &#123;<br>         <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] &#123; -<span class="hljs-number">1</span> &#125;;<br>      &#125;<br>      <span class="hljs-keyword">int</span>[] next = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[ms.length];<br>      next[<span class="hljs-number">0</span>] = -<span class="hljs-number">1</span>;<br>      next[<span class="hljs-number">1</span>] = <span class="hljs-number">0</span>;<br>      <span class="hljs-keyword">int</span> pos = <span class="hljs-number">2</span>;<br>      <span class="hljs-comment">//cn代表i-1位置的前缀的下一个字符</span><br>      <span class="hljs-keyword">int</span> cn = <span class="hljs-number">0</span>;<br>      <span class="hljs-keyword">while</span> (pos &lt; next.length) &#123;<br>         <span class="hljs-comment">//如果当前字符前一个字符和前缀的下一个字符相等 也就是当前字符的值是在原来前缀长度的基础上加1</span><br>         <span class="hljs-keyword">if</span> (ms[pos - <span class="hljs-number">1</span>] == ms[cn]) &#123;<br>            next[pos++] = ++cn;<br>            <span class="hljs-comment">//如果不相等 我要跳到cn的前缀的下一个字符 而next数组中以cn为下标的数正是我要跳到的cn的前缀的下一个字符</span><br>         &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (cn &gt; <span class="hljs-number">0</span>) &#123;<br>            cn = next[cn];<br>         &#125; <span class="hljs-keyword">else</span> &#123;<br>            next[pos++] = <span class="hljs-number">0</span>;<br>         &#125;<br>      &#125;<br>      <span class="hljs-keyword">return</span> next;<br>   &#125;<br><br>   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;<br>      String str = <span class="hljs-string">&quot;abcabcababacccccc&quot;</span>;<br>      String match = <span class="hljs-string">&quot;ktlbktlkktlbktlb&quot;</span>;<br>      String match1 = <span class="hljs-string">&quot;cabc&quot;</span>;<br><br>      String str1 = <span class="hljs-string">&quot;ababaabaabac&quot;</span>;<br>      String match11 = <span class="hljs-string">&quot;abaabac&quot;</span>;<br>      System.out.println(getIndexOf(str1, match11));<br>      getNextArray(match.toCharArray());<br><br>   &#125;<br>   <br><br>&#125;<br></code></pre></td></tr></table></figure>
             </div>
             <hr>
             <div>
@@ -300,9 +250,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/11/16/%E7%BB%8F%E5%85%B8%E7%AE%97%E6%B3%95%E4%B9%8BManacher/">
+                      <a href="/2021/11/16/%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91%EF%BC%88kruskal%E7%AE%97%E6%B3%95%EF%BC%89/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">经典算法之Manacher</span>
+                        <span class="hidden-mobile">最小生成树（kruskal算法）</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -310,8 +260,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/08/03/mysql%E4%B9%8B%E7%B4%A2%E5%BC%95%E5%92%8C%E4%BA%8B%E5%8A%A1%E7%9A%84%E5%8E%9F%E7%90%86/">
-                        <span class="hidden-mobile">mysql之索引和事务的原理</span>
+                      <a href="/2021/11/16/%E7%BB%8F%E5%85%B8%E7%AE%97%E6%B3%95%E4%B9%8BManacher/">
+                        <span class="hidden-mobile">经典算法之Manacher</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

@@ -1,0 +1,446 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+  <title>HashMap CucrrentHashMap  一致性Hash总结 - 博客空间</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>My Blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="HashMap CucrrentHashMap  一致性Hash总结">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-12-06 19:47" pubdate>
+        2021年12月6日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.2k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      15
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">HashMap CucrrentHashMap  一致性Hash总结</h1>
+            
+            <div class="markdown-body">
+              <h2 id="HashMap"><a href="#HashMap" class="headerlink" title="HashMap"></a>HashMap</h2><p> 1.7-hashtable = 数组（基础） + 链表 </p>
+<p> （&gt;=）1.8 = 数组 + 链表 + 红黑树</p>
+<p>HashMap-&gt;数组的大小</p>
+<p>new HashMap（）；如果不写构造参数，默认大小16</p>
+<p>如果说：写了初始容量：11 ？hashmap的容量就是11？</p>
+<p>hashmap的get，put操作时间复杂度O(1)</p>
+<p>key.hashCode = 不确定 - 有符号的整型值</p>
+<p>key.hashCode % 16 = table.lenth = [0-15]  = index = 3;</p>
+<p>array[index] = value; </p>
+<p>数组所有的元素位是否能够100%被利用起来？</p>
+<p>不一定，hash碰</p>
+<p>引入链表结构解决hash冲突，采用头部插入链表法，链表时间复杂度O(n)</p>
+<p>hash并不是用取模计算index，而是用位运算！</p>
+<p>效率：位运算&gt;%</p>
+<p>并没有说hashmap的容量一定是16，</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/** * The default initial capacity - MUST be a power of two. */</span>必须是<span class="hljs-number">2</span>的指数幂？<br><br>roundUpToPowerOf2(size)，强型将非<span class="hljs-number">2</span>的指数次幂的数值转化成<span class="hljs-number">2</span>的指数次幂<br>怎么转化？<br><span class="hljs-number">1</span>、必须最接近size，<span class="hljs-number">11</span><br><span class="hljs-number">2</span>、必须大于=size，<br><span class="hljs-number">3</span>、是<span class="hljs-number">2</span>的指数次幂<br><span class="hljs-number">16</span><br>size = <span class="hljs-number">17</span>，capacity = <span class="hljs-number">32</span><br><br>为什么一定要转成<span class="hljs-number">2</span>的指数次幂？<br>计算索引：<span class="hljs-keyword">int</span> i = indexFor(hash, table.length);<br><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> <span class="hljs-title">indexFor</span><span class="hljs-params">(<span class="hljs-keyword">int</span> h, <span class="hljs-keyword">int</span> length)</span> </span>&#123;<br><span class="hljs-comment">//  key.hashCode % table.lenth</span><br>	<span class="hljs-keyword">return</span> h &amp; (table.lenth-<span class="hljs-number">1</span>);<br>&#125;<br><br>h = <br><span class="hljs-number">0001</span> <span class="hljs-number">0101</span> <span class="hljs-number">0111</span> <span class="hljs-number">0010</span> <span class="hljs-number">1111</span><br><span class="hljs-number">0001</span> <span class="hljs-number">0101</span> <span class="hljs-number">0000</span> <span class="hljs-number">0010</span> <span class="hljs-number">0000</span><br><span class="hljs-number">16</span><br>    <span class="hljs-number">0</span><br>    <br><span class="hljs-number">0000</span> <span class="hljs-number">0000</span> <span class="hljs-number">0000</span> <span class="hljs-number">0000</span> <span class="hljs-number">1111</span> <span class="hljs-number">16</span>-<span class="hljs-number">1</span>=<span class="hljs-number">15</span><br><span class="hljs-number">0000</span> <span class="hljs-number">0000</span> <span class="hljs-number">0000</span> <span class="hljs-number">0000</span> <span class="hljs-number">1010</span><br><span class="hljs-number">0</span>-<span class="hljs-number">15</span><br>bit位运算：1815ms<br>mod取模运算：<span class="hljs-number">22282</span><br>效率差<span class="hljs-number">10</span>倍<br><br>HashMap扩容，<br>当前hashmap存了多少element，size&gt;=threshold<br>threshold扩容阈值 = capacity * 扩容阈值比率 <span class="hljs-number">0.75</span> = <span class="hljs-number">16</span>*<span class="hljs-number">0.75</span>=<span class="hljs-number">12</span><br>扩容怎么扩？<br>扩容为原来的<span class="hljs-number">2</span>倍。<br>转移数据<br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">transfer</span><span class="hljs-params">(Entry[] newTable, <span class="hljs-keyword">boolean</span> rehash)</span> </span>&#123;<br>        <span class="hljs-keyword">int</span> newCapacity = newTable.length;<br>        <span class="hljs-keyword">for</span> (Entry&lt;K,V&gt; e : table) &#123;<br>            <span class="hljs-keyword">while</span>(<span class="hljs-keyword">null</span> != e) &#123;<br>                Entry&lt;K,V&gt; next = e.next;<br>                <span class="hljs-keyword">if</span> (rehash) &#123; <br>                    e.hash = <span class="hljs-keyword">null</span> == e.key ? <span class="hljs-number">0</span> : hash(e.key);<span class="hljs-comment">//再一次进行hash计算？</span><br>                &#125;<br>                <span class="hljs-keyword">int</span> i = indexFor(e.hash, newCapacity);<br>                e.next = newTable[i];<br>                newTable[i] = e;<br>                e = next;<br>            &#125;<br>        &#125;<br>    &#125;<br>    <br>链表成环，死锁问题<br><br>hash扩容，有个加载因子？loadfactor = <span class="hljs-number">0.75</span>为什么是<span class="hljs-number">0.75</span><br><span class="hljs-number">0.5</span><br><span class="hljs-number">1</span><br>牛顿二项式：基于空间与时间的折中考虑<span class="hljs-number">0.5</span><br><br>引入红黑树！<br>容量&gt;=<span class="hljs-number">64</span>才会链表转红黑树，否则优先扩容<br>只有等链表过长，阈值设置TREEIFY_THRESHOLD = <span class="hljs-number">8</span>，不是代表链表长度，链表长度&gt;<span class="hljs-number">8</span>,链表<span class="hljs-number">9</span>的时候转红黑树<br>Node&lt;K,V&gt; loHead = <span class="hljs-keyword">null</span>, loTail = <span class="hljs-keyword">null</span>;<br>Node&lt;K,V&gt; hiHead = <span class="hljs-keyword">null</span>, hiTail = <span class="hljs-keyword">null</span>;<br>Node&lt;K,V&gt; next;<br>    <span class="hljs-keyword">do</span> &#123;<br>        next = e.next;<br>        <span class="hljs-keyword">if</span> ((e.hash &amp; oldCap) == <span class="hljs-number">0</span>) &#123;<br>            <span class="hljs-comment">//yangguo.hashcode &amp; 16 = 0，用低位指针</span><br>            <span class="hljs-keyword">if</span> (loTail == <span class="hljs-keyword">null</span>)<br>                loHead = e;<br>            <span class="hljs-keyword">else</span><br>                loTail.next = e;<br>            loTail = e;<br>        &#125;<br>        <span class="hljs-keyword">else</span> &#123;<br>             <span class="hljs-comment">//yangguo.hashcode &amp; 16 》 0 高位指针</span><br>            <span class="hljs-keyword">if</span> (hiTail == <span class="hljs-keyword">null</span>)<br>                hiHead = e;<br>            <span class="hljs-keyword">else</span><br>                hiTail.next = e;<br>            hiTail = e;<br>        &#125;<br>    &#125; <span class="hljs-keyword">while</span> ((e = next) != <span class="hljs-keyword">null</span>);<br><span class="hljs-keyword">if</span> (loTail != <span class="hljs-keyword">null</span>) &#123;<br>    loTail.next = <span class="hljs-keyword">null</span>; <br>    newTab[j] = loHead;，移到新的数组上的同样的index位置<br>&#125;<br><span class="hljs-keyword">if</span> (hiTail != <span class="hljs-keyword">null</span>) &#123;<br>    hiTail.next = <span class="hljs-keyword">null</span>;<br>    newTab[j + oldCap] = hiHead; <span class="hljs-comment">//index 3+16 = 19</span><br>&#125;<br>完全绕开rehash，要满足高低位移动，必须数组容量是<span class="hljs-number">2</span>的幂次方<br></code></pre></td></tr></table></figure>
+
+<h2 id="cucrenthashmap"><a href="#cucrenthashmap" class="headerlink" title="cucrenthashmap"></a><strong>cucrenthashmap</strong></h2><p>1.7采用分段锁：就是说先创建一个元素为segment的数组 每个segment是一个reentryedlok 每个segment上面有一段的数组 这一段数组的每个节点是一个链表 很显然这样设计是保证了线程的安全性但是 效率很差</p>
+<p>因为每个segment锁住的事一段数组也就是一部分数据 这一部分数据的中的其中一个如果要修改其他的都要进行加锁 </p>
+<p>1.8之后采用了synchronize加cas的方式保证效率 摒弃了分段锁的方式 还是像hashmap那样的结构 只是对每个数组上的节点进行加锁 就是说只有再put的时候才进行加synchronize读数据的时候是不加锁的</p>
+<p>另外有一个tansferhelper的概念 就是说在扩容的时候可以有多个线程执行</p>
+<h2 id="一致性hash"><a href="#一致性hash" class="headerlink" title="一致性hash"></a><strong>一致性hash</strong></h2><p>对于传统的hash在实际生产中会存在问题</p>
+<p>比如减少节点的时候会改变原有节点的映射关系 比如本来我三台机器都进行对3取模 三台机器会均分0 1 2 如果变成了对2取模就会可能会变成 0 1 0</p>
+<p>增加机器也是如此</p>
+<p>一致性hash可以解决这个问题</p>
+<p>结构是一个环 范围是 0 - 2的32次方减1 同样将机器进行hash 得到hash值后打到环上 每个点负责该点到前一个点距离的这段数据 </p>
+<p>但是这样存在的问题是 即使最开始是均匀分布的 如果新增或者删除节点还是会改变他均匀的结构 因为hash函数散列的特性有可能打偏 </p>
+<p>所以需要用到虚拟节点的技术 就是每个机器虚拟出若干个节点打到这个环上面 节点负责处理虚拟出的节点的范围 每次新增和删除都虚拟出若干虚拟节点打到环上 这样就保证了均匀分布 并且扩展性很好</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/11/16/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92-%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84%E9%97%AE%E9%A2%98/">
+                        <span class="hidden-mobile">动态规划-最短路径问题</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

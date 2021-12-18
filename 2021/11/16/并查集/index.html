@@ -18,7 +18,7 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-  <title>rocketMQ常见问题以及原理 - 博客空间</title>
+  <title>并查集 - 博客空间</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
 
@@ -163,7 +163,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="rocketMQ常见问题以及原理">
+            <span class="h2" id="subtitle" title="并查集">
               
             </span>
 
@@ -173,8 +173,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-08-05 21:45" pubdate>
-        2021年8月5日 晚上
+      <time datetime="2021-11-16 19:47" pubdate>
+        2021年11月16日 晚上
       </time>
     </span>
   
@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1k 字
+      628 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      10
+      8
        分钟
     </span>
   
@@ -225,62 +225,10 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">rocketMQ常见问题以及原理</h1>
+            <h1 style="display: none">并查集</h1>
             
             <div class="markdown-body">
-              <p>消息存盘速度</p>
-<p>如果磁盘用的合理 磁盘的速度完全匹配网络传输速度目前的高性能磁盘，顺序写速度</p>
-<p>可以达到600MB/s 但是随机读写只有100k/s rocketmq采用的是顺序读写</p>
-<p>另外使用的零拷贝中mmap技术实现减少用户态的切换</p>
-<p>存储结构主要有三块</p>
-<p>CommitLog 消息存储</p>
-<p>ConsumerQueue 消息消费到哪的索引</p>
-<p>IndexFile 提供一些根据key或者时间区查询的方式</p>
-<p>abort 文件在启动时候创建正常关闭时候删除 如果非正常关闭不会删除 可以通过这个文件来判断是否正常</p>
-<p>刷盘 </p>
-<p>同步 安全不会产生丢消息 会影响性能</p>
-<p>异步 性能比较高 可能会丢消息</p>
-<p>主从复制</p>
-<p>同步</p>
-<p>异步</p>
-<p>负载均衡</p>
-<p>生产者会轮询目标下topic所有MessageQueue</p>
-<p>也可以指定MessageQueue往一个里面发消息</p>
-<p>也可以平均分配到各个MessageQueue</p>
-<p>也可以设置同机房优先分配</p>
-<p>重试消息 </p>
-<p>如果消费失败可以进行重试 如果一直失败 超过16次会进入到死信队列</p>
-<p>死信队列</p>
-<p>需要人工处理</p>
-<p>消费幂等</p>
-<p>在互联网尤其是网络不稳定情况容易出现</p>
-<p>发送时消息重复</p>
-<p>投递时消息重复</p>
-<p>负载均衡时消息重复</p>
-<p>rocketmq保证分布式事务</p>
-<p>首先生产者在生产消息前会向mq发一个half消息 mq收到消息后会响应一个half这样保证mq没有宕机</p>
-<p>然后生产者执行本地事务 正常提交或者回滚都会发到mq 正常的就正常消费 回滚的就丢弃</p>
-<p>因为提交本地事务有可能时间比较长 mq 也不会一直等 如果超过时间后 mq定期回查本地事务状态</p>
-<p>生产者收到回查请求后会进行回查本地事务状态 然后将状态进行提交到mq</p>
-<p>Dledger保证集群高可用</p>
-<p>在rocketmq4.5之前是不能保证高可用的 在这个版本之后引入Dledger保证集群的高可用</p>
-<p>它会接管commitlog消息存储</p>
-<p>每个节点有三个状态，Leader，follower和candidate 初始状态大家都是follower 集群内部会有一个超市信号</p>
-<p>大家都变成candidate 向其他成员发送请求 获得票数最多的就会成为leader 没有选出就会再次选举</p>
-<p>Leader 会定期往follower发送心跳保证自己的地位 如果follower长时间没有收到心跳就会转为candidate向其他节点发送请求 超过半数就会成为leader</p>
-<p>在raft协议中有一个逻辑时钟的概念叫做term</p>
-<p>也就是每到这term时间会进行重新选举 选举成功的节点会保持一个leader的状态 这也就保证了在同一时间内只会有一个leader 不会产生脑裂的问题</p>
-<p>两阶段提交</p>
-<p>leader收到数据后会将数据标为uncommitted 然后将数据同步给从节点 从节点接收完数据后会返回给leader一个ack 当超过一半的从节点都返回了ack leader会将这个数据状态改为commited</p>
-<p>这样就保证了如果宕机重启发现这个标识会进行重新同步</p>
-<p>rocketmq如何保证不重复消费</p>
-<p>在RocketMQ中，是无法保证每个消息只被投递一次的，所以要在业务上</p>
-<p>自行来保证消息消费的幂等性。</p>
-<p>而要处理这个问题，RocketMQ的每条消息都有一个唯一的MessageId，这个参数在多次投递的过程中</p>
-<p>是不会改变的，所以业务上可以用这个MessageId来作为判断幂等的关键依据。</p>
-<p>但是，这个MessageId是无法保证全局唯一的，也会有冲突的情况。所以在一些对幂等性要求严格的场</p>
-<p>景，最好是使用业务上唯一的一个标识比较靠谱。</p>
-
+              <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 两个元素是否属于一个集合</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * 用list或者hashset也可以实现 但是代价很高 需要遍历</span><br><span class="hljs-comment"> * 那么用并查集是怎么做呢 最开始每个元素都指向自己 如果a在b中 a就指向b</span><br><span class="hljs-comment"> * 如果两个元素往上找都发现是指向b那么 两个元素在同一个集合</span><br><span class="hljs-comment"> * 也就是 a代 = b代 那么在一个集合</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * 为什么要打平 打平后下一次再查的话代价就没那么高了</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * 合并 需要先查一下issameset就是两个是否在同一个集合 如果不在才需要合并</span><br><span class="hljs-comment"> * 合并就是把小的集合的头部挂在大的集合头部的底下 就合并完成了（头部也就是代表点）</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">UnionFind</span> </span>&#123;<br><br>   <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Node</span> </span>&#123;<br>      <span class="hljs-comment">// whatever you like</span><br>   &#125;<br><br>   <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DisjointSets</span> </span>&#123;<br>      <span class="hljs-comment">//用的是map 的对应关系来表示往上指的过程</span><br>      <span class="hljs-comment">//k v 表示 k的父亲节点 是v 比如（a,b）代表a的父亲是b</span><br>      <span class="hljs-keyword">public</span> HashMap&lt;Node, Node&gt; fatherMap;<br>      <span class="hljs-comment">//k v k是节点 v是数字 表示如果k是代表节点 v存的是指向k的数量 可以理解为孩子的数量 如果k不是代表点 那么这个信息是无效的</span><br>      <span class="hljs-keyword">public</span> HashMap&lt;Node, Integer&gt; rankMap;<br><br>      <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">DisjointSets</span><span class="hljs-params">()</span> </span>&#123;<br>         fatherMap = <span class="hljs-keyword">new</span> HashMap&lt;Node, Node&gt;();<br>         rankMap = <span class="hljs-keyword">new</span> HashMap&lt;Node, Integer&gt;();<br>      &#125;<br><br>      <span class="hljs-comment">//初始化操作 如果想用并查集 应该把数据给我 然后进行初始化操作 甚至可以改成构造方法中做这件事</span><br>      <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">makeSets</span><span class="hljs-params">(List&lt;Node&gt; nodes)</span> </span>&#123;<br>         fatherMap.clear();<br>         rankMap.clear();<br>         <span class="hljs-keyword">for</span> (Node node : nodes) &#123;<br>            fatherMap.put(node, node);<br>            rankMap.put(node, <span class="hljs-number">1</span>);<br>         &#125;<br>      &#125;<br><br>      <span class="hljs-function"><span class="hljs-keyword">public</span> Node <span class="hljs-title">findFather</span><span class="hljs-params">(Node n)</span> </span>&#123;<br>         Node father = fatherMap.get(n);<br>         <span class="hljs-keyword">if</span> (father != n) &#123;<br>            <span class="hljs-comment">//递归行为 每次会把返回的father 在每次的下面map中put 的时候使用</span><br>            father = findFather(father);<br>         &#125;<br>         <span class="hljs-comment">//father就是每次递归返回回来的father</span><br>         fatherMap.put(n, father);<br>         <span class="hljs-keyword">return</span> father;<br>      &#125;<br><br>      <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">union</span><span class="hljs-params">(Node a, Node b)</span> </span>&#123;<br>         <span class="hljs-keyword">if</span> (a == <span class="hljs-keyword">null</span> || b == <span class="hljs-keyword">null</span>) &#123;<br>            <span class="hljs-keyword">return</span>;<br>         &#125;<br>         <span class="hljs-comment">//寻找代表点</span><br>         Node aFather = findFather(a);<br>         Node bFather = findFather(b);<br>         <span class="hljs-comment">//如果两个不在一个集合里面 我才给你合并</span><br>         <span class="hljs-keyword">if</span> (aFather != bFather) &#123;<br>            <span class="hljs-keyword">int</span> aFrank = rankMap.get(aFather);<br>            <span class="hljs-keyword">int</span> bFrank = rankMap.get(bFather);<br>            <span class="hljs-comment">//小的代表点挂在大的代表点下面就完成了合并</span><br>            <span class="hljs-keyword">if</span> (aFrank &lt;= bFrank) &#123;<br>               <span class="hljs-comment">//说明 aFrank小 bFrank大 aFrank小挂在bFrank下面就行了</span><br>               fatherMap.put(aFather, bFather);<br>               <span class="hljs-comment">//同级代表节点</span><br>               rankMap.put(bFather, aFrank + bFrank);<br>            &#125; <span class="hljs-keyword">else</span> &#123;<br>               <span class="hljs-comment">//否则就是bFrank小 aFrank大</span><br>               fatherMap.put(bFather, aFather);<br>               rankMap.put(aFather, aFrank + bFrank);<br>            &#125;<br>         &#125;<br>      &#125;<br><br>   &#125;<br><br>   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;<br><br>   &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
             </div>
             <hr>
             <div>
@@ -300,9 +248,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/11/16/%E7%BB%8F%E5%85%B8%E7%AE%97%E6%B3%95%E4%B9%8BManacher/">
+                      <a href="/2021/11/16/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92-%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84%E9%97%AE%E9%A2%98/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">经典算法之Manacher</span>
+                        <span class="hidden-mobile">动态规划-最短路径问题</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -310,8 +258,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/08/03/mysql%E4%B9%8B%E7%B4%A2%E5%BC%95%E5%92%8C%E4%BA%8B%E5%8A%A1%E7%9A%84%E5%8E%9F%E7%90%86/">
-                        <span class="hidden-mobile">mysql之索引和事务的原理</span>
+                      <a href="/2021/11/16/%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91%EF%BC%88Prim%E7%AE%97%E6%B3%95%EF%BC%89/">
+                        <span class="hidden-mobile">最小生成树（Prim算法）</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

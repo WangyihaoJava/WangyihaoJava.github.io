@@ -18,7 +18,7 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-  <title>rocketMQ常见问题以及原理 - 博客空间</title>
+  <title>最小生成树（Prim算法） - 博客空间</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
 
@@ -163,7 +163,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="rocketMQ常见问题以及原理">
+            <span class="h2" id="subtitle" title="最小生成树（Prim算法）">
               
             </span>
 
@@ -173,8 +173,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-08-05 21:45" pubdate>
-        2021年8月5日 晚上
+      <time datetime="2021-11-16 19:47" pubdate>
+        2021年11月16日 晚上
       </time>
     </span>
   
@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1k 字
+      385 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      10
+      5
        分钟
     </span>
   
@@ -225,62 +225,10 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">rocketMQ常见问题以及原理</h1>
+            <h1 style="display: none">最小生成树（Prim算法）</h1>
             
             <div class="markdown-body">
-              <p>消息存盘速度</p>
-<p>如果磁盘用的合理 磁盘的速度完全匹配网络传输速度目前的高性能磁盘，顺序写速度</p>
-<p>可以达到600MB/s 但是随机读写只有100k/s rocketmq采用的是顺序读写</p>
-<p>另外使用的零拷贝中mmap技术实现减少用户态的切换</p>
-<p>存储结构主要有三块</p>
-<p>CommitLog 消息存储</p>
-<p>ConsumerQueue 消息消费到哪的索引</p>
-<p>IndexFile 提供一些根据key或者时间区查询的方式</p>
-<p>abort 文件在启动时候创建正常关闭时候删除 如果非正常关闭不会删除 可以通过这个文件来判断是否正常</p>
-<p>刷盘 </p>
-<p>同步 安全不会产生丢消息 会影响性能</p>
-<p>异步 性能比较高 可能会丢消息</p>
-<p>主从复制</p>
-<p>同步</p>
-<p>异步</p>
-<p>负载均衡</p>
-<p>生产者会轮询目标下topic所有MessageQueue</p>
-<p>也可以指定MessageQueue往一个里面发消息</p>
-<p>也可以平均分配到各个MessageQueue</p>
-<p>也可以设置同机房优先分配</p>
-<p>重试消息 </p>
-<p>如果消费失败可以进行重试 如果一直失败 超过16次会进入到死信队列</p>
-<p>死信队列</p>
-<p>需要人工处理</p>
-<p>消费幂等</p>
-<p>在互联网尤其是网络不稳定情况容易出现</p>
-<p>发送时消息重复</p>
-<p>投递时消息重复</p>
-<p>负载均衡时消息重复</p>
-<p>rocketmq保证分布式事务</p>
-<p>首先生产者在生产消息前会向mq发一个half消息 mq收到消息后会响应一个half这样保证mq没有宕机</p>
-<p>然后生产者执行本地事务 正常提交或者回滚都会发到mq 正常的就正常消费 回滚的就丢弃</p>
-<p>因为提交本地事务有可能时间比较长 mq 也不会一直等 如果超过时间后 mq定期回查本地事务状态</p>
-<p>生产者收到回查请求后会进行回查本地事务状态 然后将状态进行提交到mq</p>
-<p>Dledger保证集群高可用</p>
-<p>在rocketmq4.5之前是不能保证高可用的 在这个版本之后引入Dledger保证集群的高可用</p>
-<p>它会接管commitlog消息存储</p>
-<p>每个节点有三个状态，Leader，follower和candidate 初始状态大家都是follower 集群内部会有一个超市信号</p>
-<p>大家都变成candidate 向其他成员发送请求 获得票数最多的就会成为leader 没有选出就会再次选举</p>
-<p>Leader 会定期往follower发送心跳保证自己的地位 如果follower长时间没有收到心跳就会转为candidate向其他节点发送请求 超过半数就会成为leader</p>
-<p>在raft协议中有一个逻辑时钟的概念叫做term</p>
-<p>也就是每到这term时间会进行重新选举 选举成功的节点会保持一个leader的状态 这也就保证了在同一时间内只会有一个leader 不会产生脑裂的问题</p>
-<p>两阶段提交</p>
-<p>leader收到数据后会将数据标为uncommitted 然后将数据同步给从节点 从节点接收完数据后会返回给leader一个ack 当超过一半的从节点都返回了ack leader会将这个数据状态改为commited</p>
-<p>这样就保证了如果宕机重启发现这个标识会进行重新同步</p>
-<p>rocketmq如何保证不重复消费</p>
-<p>在RocketMQ中，是无法保证每个消息只被投递一次的，所以要在业务上</p>
-<p>自行来保证消息消费的幂等性。</p>
-<p>而要处理这个问题，RocketMQ的每条消息都有一个唯一的MessageId，这个参数在多次投递的过程中</p>
-<p>是不会改变的，所以业务上可以用这个MessageId来作为判断幂等的关键依据。</p>
-<p>但是，这个MessageId是无法保证全局唯一的，也会有冲突的情况。所以在一些对幂等性要求严格的场</p>
-<p>景，最好是使用业务上唯一的一个标识比较靠谱。</p>
-
+              <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 从一个节点开始相邻的边都是可以解锁的点 选择一个边最小的边进行解锁点 看这个点是不是新出现的 如果是就要 依次往下考察 解锁 直到所有的点都被解锁</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * 我们总是用一个大集合 让新节点加进来所以用hashset就可以 不需要并查集 k算法需要并查集是因为他需要比较两个集合是否需要合并(一个边的引入 出现两个点 两个点各自的集合 是否在一个并查集 是就连在一起了)</span><br><span class="hljs-comment"> */</span><br><span class="hljs-comment">// undirected graph only</span><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Prim</span> </span>&#123;<br><br>   <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">EdgeComparator</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Comparator</span>&lt;<span class="hljs-title">Edge</span>&gt; </span>&#123;<br><br>      <span class="hljs-meta">@Override</span><br>      <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">compare</span><span class="hljs-params">(Edge o1, Edge o2)</span> </span>&#123;<br>         <span class="hljs-keyword">return</span> o1.weight - o2.weight;<br>      &#125;<br><br>   &#125;<br><br>   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Set&lt;Edge&gt; <span class="hljs-title">primMST</span><span class="hljs-params">(Graph graph)</span> </span>&#123;<br>      <span class="hljs-comment">//优先级队列和k算法一个 里面放的边 小根堆</span><br>      PriorityQueue&lt;Edge&gt; priorityQueue = <span class="hljs-keyword">new</span> PriorityQueue&lt;&gt;(<span class="hljs-keyword">new</span> EdgeComparator());<br>      HashSet&lt;Node&gt; set = <span class="hljs-keyword">new</span> HashSet&lt;&gt;();<br>      Set&lt;Edge&gt; result = <span class="hljs-keyword">new</span> HashSet&lt;&gt;();<br>      <span class="hljs-keyword">for</span> (Node node : graph.nodes.values()) &#123;<br>         <span class="hljs-comment">//不在集合里面</span><br>         <span class="hljs-keyword">if</span> (!set.contains(node)) &#123;<br>            <span class="hljs-comment">//node加集合里面</span><br>            set.add(node);<br>            <span class="hljs-comment">//node所有的边加在优先级队列</span><br>            <span class="hljs-keyword">for</span> (Edge edge : node.edges) &#123;<br>               priorityQueue.add(edge);<br>            &#125;<br>            <span class="hljs-keyword">while</span> (!priorityQueue.isEmpty()) &#123;<br>               <span class="hljs-comment">//从队列弹出最小的边</span><br>               Edge edge = priorityQueue.poll();<br>               Node toNode = edge.to;<br>               <span class="hljs-comment">//这个tonode是否已经加进set了</span><br>               <span class="hljs-keyword">if</span> (!set.contains(toNode)) &#123;<br>                  <span class="hljs-comment">//不在加进来</span><br>                  set.add(toNode);<br>                  result.add(edge);<br>                  <span class="hljs-comment">//重新解锁新的边 就是往优先级队列加这个新的tonode的边</span><br>                  <span class="hljs-keyword">for</span> (Edge nextEdge : node.edges) &#123;<br>                     priorityQueue.add(nextEdge);<br>                  &#125;<br>               &#125;<br>            &#125;<br>         &#125;<br>      &#125;<br>      <span class="hljs-keyword">return</span> result;<br>   &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
             </div>
             <hr>
             <div>
@@ -300,9 +248,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/11/16/%E7%BB%8F%E5%85%B8%E7%AE%97%E6%B3%95%E4%B9%8BManacher/">
+                      <a href="/2021/11/16/%E5%B9%B6%E6%9F%A5%E9%9B%86/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">经典算法之Manacher</span>
+                        <span class="hidden-mobile">并查集</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -310,8 +258,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/08/03/mysql%E4%B9%8B%E7%B4%A2%E5%BC%95%E5%92%8C%E4%BA%8B%E5%8A%A1%E7%9A%84%E5%8E%9F%E7%90%86/">
-                        <span class="hidden-mobile">mysql之索引和事务的原理</span>
+                      <a href="/2021/11/16/%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91%EF%BC%88kruskal%E7%AE%97%E6%B3%95%EF%BC%89/">
+                        <span class="hidden-mobile">最小生成树（kruskal算法）</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
